@@ -1,0 +1,112 @@
+NAME
+    Net::DHCP::Packet - Object methods to create a DHCP packet.
+
+SYNOPSIS
+        use Net::DHCP::Packet;
+            use strict;
+
+            my $p = new Net::DHCP::Packet('Chaddr' => '0??BCDEF', 
+                                    'Xid' => hex(0x9F0FD),
+                                    'Ciaddr' => '0.0.0.0',
+                                    'Siaddr' => '0.0.0.0', 'Hops' => 0);
+
+DESCRIPTION
+    Represents a DHCP packet as specified in RFC 1533, RFC 2132.
+
+  CONSTRUCTORS
+
+    new
+    discover
+    request
+    decline
+    release
+  METHODS
+
+    op(BYTE opcode)
+            Sets the opcode in the BOOTP type.
+            Without argument, returns the BOOTP type.
+            Argument is either:
+            Net::DHCP::Packet::BOOTREQUEST()        { pack('C',0x1) }
+            Net::DHCP::Packet::BOOTREPLY()  { pack('C',0x2) }
+
+    htype(BYTE hardware address type)
+            Ex. '1' = 10mb ethernet
+
+    hlen(BYTE hardware address length)
+            For most NIC's, the MAC address has 6 bytes.
+
+    hops(BYTE number of hops)
+            This field is incremented by each encountered DHCP relay agent. 
+        
+    xid(C4 transaction id)
+            4 byte transaction id.
+
+    secs(SHORT elapsed boot time)
+            2 bytes for elapsed boot time.
+
+    flags(SHORT)
+            2 bytes. 
+            0x0000 = No broadcasts.
+            0x1000 = Broadcasts.
+
+    ciaddr(IP address)
+            IP address is an ascci string like '10.24.50.3'.
+        
+    yiaddr(IP address)
+    siaddr(IP address)
+    giaddr(IP address)
+    chaddr(MAC address) Hexadecimal string represenatation. Example:
+    "0010A706DFFF" for 6 bytes mac address.
+    sname(C64 servername)
+            Optional 64 bytes null terminated string with server host name.
+
+    file(C128 bootfilename)
+            Optional
+
+    options(REF Net::DHCP::Options)
+                    Argument is reference to a Net::DHCP::Options object.
+                    Without argument, returns the Options object.
+
+    addOption($type, $value)
+    getOption($type)
+    new(%ARGS)
+            The hash %ARGS  can contain any of these keys:
+            Op, Htype, Hlen, Hops, Xid, Secs, Flags, Ciaddr, Yiaddr, Siaddr, 
+            Giaddr, Chaddr, Sname, File
+        
+    discover
+            DHCP discover packet
+
+    request
+            DHCP request packet
+        
+    decline
+            DHCP decline packet
+
+    release
+            DHCP release packet
+
+    serialize
+            Converts a Net::DHCP::Packet to a string, ready to put on the network.
+
+    marshall(string)
+            The inverse of serialize. Converts a string, presumably a 
+            received UDP packet, into a Net::DHCP::Packet.
+
+    toString()
+            Returns a textual representation of the packet, for debugging.
+
+AUTHOR
+    F. van Dun
+
+BUGS
+    I only ran some simple tests on Windows 2000 with a W2K DHCP server and
+    a USR DHCP server. Not yet tested on Unix platform.
+
+COPYRIGHT
+    This is free software. It can be distributed and/or modified under the
+    same terms as Perl itself.
+
+SEE ALSO
+    perl(1), Net::DHCP::Options.
+

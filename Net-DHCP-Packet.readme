@@ -1,0 +1,5 @@
+Net/DHCP/Packet.pm : Module to create DHCP packets.
+Net/DHCP/Packet.html : Documentation.
+Net/DHCP/Options.pm : Module to create DHCP options.
+Net/DHCP/Options.html : Documentation. 
+dhcp2.pl : A simple dhcp client example using the NEt::DHCP::Packet module.
